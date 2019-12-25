@@ -6,7 +6,7 @@ RSpec.describe 'Sessions API', type: :request do
   }
   
   describe "POST /sessions" do
-    let(:valid_attributes) { { email: 'user@gmail.com', password: "password" } }
+    let(:valid_attributes) { { user: { email: 'user@gmail.com', password: "password" } } }
 
     context "when the request is valid" do
       before { post '/sessions', params: valid_attributes }
@@ -22,7 +22,7 @@ RSpec.describe 'Sessions API', type: :request do
     end
 
     context "when the request is invalid" do
-      before { post '/sessions', params: { email: "incorrect" } }
+      before { post '/sessions', params: { user: { email: "incorrect" } } }
 
       it "returns a status code of 401" do
         expect(response).to have_http_status(401)
