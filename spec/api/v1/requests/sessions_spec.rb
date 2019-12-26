@@ -1,14 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe 'Sessions API', type: :request do
-  before {
-    user = User.create!({ email: 'user@gmail.com', password: "password", password_confirmation: "password" })
-  }
-  
+RSpec.describe 'Sessions API', type: :request do  
   describe "POST /api/v1/sessions" do
     let(:valid_attributes) { { user: { email: 'user@gmail.com', password: "password" } } }
 
     context "when the request is valid" do
+      before {
+        user = User.create!({ email: 'user@gmail.com', password: "password", password_confirmation: "password" })
+      }
       before { post '/api/v1/sessions', params: valid_attributes }
 
       it "logs in the user" do
@@ -22,14 +21,16 @@ RSpec.describe 'Sessions API', type: :request do
     end
 
     context "when the request is invalid" do
-      before { post '/api/v1/sessions', params: { user: { email: "incorrect" } } }
+      before { 
+        post '/api/v1/sessions', params: { user: { email: "incorrect" } } 
+      }
 
       it "returns a status code of 401" do
-        expect(response).to have_http_status(401)
+        expect(response).to have_http_status(422)
       end
 
-      xit 'returns a validation failure message' do
-        expect(response.body).to match(/Validation Failed: Password can't be blank/)
+      it 'returns a validation failure message' do
+        expect(response.body).to match(/Username or Password does not match./)
       end
     end
   end

@@ -11,7 +11,7 @@ class Api::V1::SessionsController < ApplicationController
         user: user
       }
     else
-      json_response(nil, 401)
+      render json: { status: "error", message: "Username or Password does not match." }, status: :unprocessable_entity
     end
   end
 
@@ -29,7 +29,7 @@ class Api::V1::SessionsController < ApplicationController
     end
   end
 
-  def logout
+  def destroy
     reset_session
     render json: { logged_out: true, status: 200 }
   end
