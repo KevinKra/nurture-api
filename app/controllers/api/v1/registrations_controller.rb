@@ -1,5 +1,4 @@
-class RegistrationsController < ApplicationController
-
+class Api::V1::RegistrationsController < ApplicationController
   def create
     user = User.create!(
       email: params["user"]["email"],
@@ -15,7 +14,7 @@ class RegistrationsController < ApplicationController
         user: user
       }
     else
-      render json: { status: 500 }
+      render json: { status: 500 }, status: 500
     end
   end
 end
